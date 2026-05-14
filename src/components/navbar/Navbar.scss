@@ -1,164 +1,152 @@
-@use "../../responsive.scss" as *;
+@import "../../responsive.scss";
 
-.navbar {
+nav {
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
-  padding: 0 20px;
 
-  .left {
-    display: flex;
-    align-items: center;
-    gap: 40px;
+  a {
+    transition: all 0.4s ease;
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 18px;
-      color: #1a1a1a;
-
-      img {
-        width: 28px;
-        height: 28px;
-        object-fit: contain;
-      }
-
-      span {
-        letter-spacing: -0.3px;
-      }
+    @include sm {
+      display: none;
     }
 
-    a:not(.logo) {
-      font-size: 14px;
-      font-weight: 500;
-      color: #444;
-      transition: color 0.2s ease;
-
-      &:hover {
-        color: #000;
-      }
-    }
-
-    @include md {
-      gap: 24px;
-
-      a:not(.logo) {
-        display: none;
-      }
+    &:hover {
+      scale: 1.05;
     }
   }
 
-  .right {
+  .left {
+    flex: 3;
     display: flex;
     align-items: center;
-    gap: 24px;
-    position: relative;
+    gap: 50px;
 
-    a:not(.register) {
-      font-size: 14px;
-      font-weight: 500;
-      color: #444;
-      transition: color 0.2s ease;
+    .logo {
+      font-weight: bold;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
 
-      &:hover {
-        color: #000;
+      img {
+        width: 28px;
       }
 
-      @include md {
-        display: none;
+      span {
+        @include md {
+          display: none;
+        }
+
+        @include sm {
+          display: initial;
+        }
+      }
+    }
+  }
+  .right {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #fcf5f3;
+    height: 100%;
+
+    @include md {
+      background-color: transparent;
+    }
+
+    a {
+      padding: 12px 24px;
+      margin: 20px;
+    }
+
+    .user{
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+
+      img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+      }
+
+      span{
+        @include sm{
+          display: none;
+        }
+      }
+
+      .profile{
+        padding: 12px 24px;
+        background-color: #fece51;
+        cursor: pointer;
+        border: none;
+        position: relative;
+        
+        .notification{
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background-color: red;
+          color: white;
+          border-radius: 50%;
+          width: 26px;
+          height: 26px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
       }
     }
 
     .register {
-      background-color: #f5a623;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 10px 22px;
-      border-radius: 4px;
-      transition: background-color 0.2s ease, transform 0.1s ease;
-
-      &:hover {
-        background-color: #e09410;
-        transform: translateY(-1px);
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
-
-      @include md {
-        display: none;
-      }
+      background-color: #fece51;
     }
 
     .menuIcon {
       display: none;
-      cursor: pointer;
+      z-index: 999;
 
       img {
-        width: 22px;
-        height: 22px;
-        object-fit: contain;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
       }
 
-      @include md {
-        display: flex;
-        align-items: center;
+      @include sm {
+        display: inline;
       }
     }
 
     .menu {
       position: absolute;
-      top: calc(100% + 20px);
-      right: 0;
-      background-color: #fff;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 16px 24px;
+      top: 0;
+      right: -50%;
+      background-color: black;
+      color: white;
+      height: 100vh;
+      width: 50%;
+      transition: all 1s ease;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      min-width: 180px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      z-index: 999;
-
-      // hidden state — open = false means class is "menu active" (visible)
-      // per your logic: open ? "menu" : "menu active"
-      // so "menu" alone = hidden, "menu active" = visible
-      display: none;
-      pointer-events: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
 
       &.active {
-        display: flex;
-        pointer-events: all;
+        right: 0;
       }
 
-      a {
-        font-size: 14px;
-        font-weight: 500;
-        color: #444;
-        transition: color 0.2s ease;
-
-        &:hover {
-          color: #000;
-        }
-
-        &.register {
-          display: inline-block;
-          background-color: #f5a623;
-          color: #fff;
-          padding: 8px 16px;
-          border-radius: 4px;
-          text-align: center;
-          font-weight: 600;
-
-          &:hover {
-            background-color: #e09410;
-          }
+      @include sm {
+        a {
+          display: initial;
         }
       }
     }
