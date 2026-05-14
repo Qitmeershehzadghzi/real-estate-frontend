@@ -2,15 +2,13 @@
 
 .searchBar {
   .type {
-
-
     button {
-      padding: 16px 36px;
+      padding: 16px 46px;
       border: 1px solid #999;
       border-bottom: none;
-      cursor: pointer;
       background-color: white;
       text-transform: capitalize;
+      cursor: pointer;
 
       &.active {
         background-color: black;
@@ -21,6 +19,7 @@
         border-top-left-radius: 5px;
         border-right: none;
       }
+
       &:last-child {
         border-top-right-radius: 5px;
         border-left: none;
@@ -29,69 +28,64 @@
   }
 
   form {
-    border: 1px solid #999;
+    height: 64px;
     display: flex;
     justify-content: space-between;
-    height: 64px;
     gap: 5px;
+    border: 1px solid #999;
 
     @include sm {
+      height: auto;
       flex-direction: column;
       border: none;
     }
 
     input {
-      border: none;
-      padding: 0px 10px;
       width: 200px;
+      padding: 0 10px;
+      border: none;
 
       @include lg {
-        padding: 0px 5px;
+        padding: 0 5px;
 
         &:nth-child(2),
         &:nth-child(3) {
           width: 140px;
         }
       }
+
       @include md {
         width: 200px;
+
         &:nth-child(2),
         &:nth-child(3) {
           width: 200px;
         }
       }
 
-      @include sm{
+      @include sm {
         width: auto;
-        &:nth-child(2),
-        &:nth-child(3) {
-          width: auto;
-        }
         padding: 20px;
         border: 1px solid #999;
       }
     }
 
-    a{
+    button {
       flex: 1;
-      background-color: #fece51;
       display: flex;
       align-items: center;
       justify-content: center;
+      border: none;
+      background-color: #fece51;
+      cursor: pointer;
 
-      button {
-        border: none;
-        cursor: pointer;
-        background-color: #fece51;
-        
-        @include sm{
-          padding: 10px;
-        }
-        
-        img {
-          width: 24px;
-          height: 24px;
-        }
+      @include sm {
+        padding: 10px;
+      }
+
+      img {
+        width: 28px;
+        height: 24px;
       }
     }
   }
