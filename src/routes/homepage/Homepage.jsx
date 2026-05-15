@@ -1,39 +1,40 @@
-import React from "react";
-import "./homePage.scss";
 import SearchBar from "../../components/searchBar/SearchBar";
+import "./homePage.scss";
 
-const Homepage = () => {
+function HomePage() {
   return (
     <div className="homePage">
       <div className="textContainer">
         <div className="wrapper">
-          <h1 className="title">
-            Find real estate & get your dream place
-          </h1>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim animi tempore est mollitia, odit necessitatibus quasi officia asperiores itaque voluptatibus dolorem cum dignissimos eum? Placeat!</p>
+          <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
+            explicabo suscipit cum eius, iure est nulla animi consequatur
+            facilis id pariatur fugit quos laudantium temporibus dolor ea
+            repellat provident impedit!
+          </p>
           <SearchBar />
           <div className="boxes">
             <div className="box">
               <h1>16+</h1>
-              <h2>years of experience</h2>
+              <h2>Years of Experience</h2>
             </div>
-             <div className="box">
+            <div className="box">
               <h1>200</h1>
               <h2>Award Gained</h2>
             </div>
-             <div className="box">
-              <h1>2000</h1>
-              <h2>Property ready</h2>
+            <div className="box">
+              <h1>2000+</h1>
+              <h2>Property Ready</h2>
             </div>
           </div>
         </div>
       </div>
-
       <div className="imgContainer">
-        <img src="/bg.png" alt="background" />
+        <img src="/bg.png" alt="" />
       </div>
     </div>
   );
-};
+}
 
-export default Homepage;
+export default HomePage;

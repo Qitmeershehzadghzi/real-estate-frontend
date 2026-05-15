@@ -3,76 +3,53 @@ import "./searchBar.scss";
 
 const types = ["buy", "rent"];
 
-const SearchBar = () => {
+function SearchBar() {
   const [query, setQuery] = useState({
     type: "buy",
     location: "",
-    minPrice: "",
-    maxPrice: "",
+    minPrice: 0,
+    maxPrice: 0,
   });
 
   const switchType = (val) => {
-    setQuery((prev) => ({
-      ...prev,
-      type: val,
-    }));
-  };
-
-  const handleChange = (e) => {
-    setQuery((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setQuery((prev) => ({ ...prev, type: val }));
   };
 
   return (
     <div className="searchBar">
-      {/* TYPE BUTTONS */}
       <div className="type">
-        {types.map((item) => (
+        {types.map((type) => (
           <button
-            key={item}
-            onClick={() => switchType(item)}
-            className={query.type === item ? "active" : ""}
+            key={type}
+            onClick={() => switchType(type)}
+            className={query.type === type ? "active" : ""}
           >
-            {item}
+            {type}
           </button>
         ))}
       </div>
-
-      {/* FORM */}
       <form>
-        <input
-          type="text"
-          name="location"
-          placeholder="City location"
-          onChange={handleChange}
-        />
-
+        <input type="text" name="location" placeholder="City Location" />
         <input
           type="number"
           name="minPrice"
-          min={1}
-          max={1000000}
+          min={0}
+          max={10000000}
           placeholder="Min Price"
-          onChange={handleChange}
         />
-
         <input
           type="number"
           name="maxPrice"
-          min={1}
-          max={1000000}
+          min={0}
+          max={10000000}
           placeholder="Max Price"
-          onChange={handleChange}
         />
-
-        <button type="submit">
-          <img src="/search.png" alt="search" />
+        <button>
+          <img src="/search.png" alt="" />
         </button>
       </form>
     </div>
   );
-};
+}
 
 export default SearchBar;
