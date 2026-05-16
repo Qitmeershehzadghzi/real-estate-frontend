@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./layout.scss";
-
+import NewPostPage from "./routes/newPostPage/newPostPage.jsx";
 import Homepage from "./routes/homepage/homePage.jsx";
 import ListPage from "./routes/listPage/listPage.jsx";
 import SinglePage from "./routes/singlePage/singlePage.jsx";
@@ -28,6 +28,7 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route path="profile" element={<ProfilePage />} />
           <Route path="profile/update" element={<ProfileUpdate />} />
+          <Route path="add" element={<NewPostPage />} />
         </Route>
 
       </Route>

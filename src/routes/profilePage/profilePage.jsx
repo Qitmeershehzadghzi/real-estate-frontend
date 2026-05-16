@@ -43,7 +43,7 @@ navigate("/")
               />
             </span>
             <span>
-              Username: <b>{currentuser?.username}</b>
+              Username: <b>{currentuser?.username || currentuser?.name}</b>
             </span>
             <span>
               E-mail: <b>{currentuser?.email}</b>
@@ -52,7 +52,10 @@ navigate("/")
           </div>
           <div className="title">
             <h1>My List</h1>
+            <Link to="/add">
+
             <button>Create New Post</button>
+            </Link>
           </div>
           <List />
           <div className="title">

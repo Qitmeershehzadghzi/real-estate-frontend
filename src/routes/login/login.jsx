@@ -24,8 +24,7 @@ const {updateUser}=useContext(AuthCOntext)
         name,
         password,
       });
-      updateUser(res.data)
-localStorage.setItem("user",JSON.stringify(res.data))
+      updateUser(res.data.userWithoutPassword)
       console.log(res.data);
       navigate("/");
 

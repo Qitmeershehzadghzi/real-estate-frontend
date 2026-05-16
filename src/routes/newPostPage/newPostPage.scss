@@ -4,7 +4,8 @@
 
   .formContainer {
     flex: 3;
-    overflow: scroll;
+    overflow-y: auto; // Changed from 'scroll' to 'auto' for better UX
+    padding: 20px;
 
     .wrapper {
       margin: 30px 50px 100px 0px;
@@ -16,42 +17,97 @@
         gap: 20px;
 
         .item {
-          width: 30%;
+          width: calc(33.333% - 14px); // Better width calculation
           display: flex;
           flex-direction: column;
-          gap: 5px;
+          gap: 8px; // Increased gap slightly
 
           label {
+            font-weight: 500;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 4px;
           }
 
-          input {
-            padding: 20px;
-            border-radius: 5px;
-            border: 1px solid gray;
+          input, select {
+            padding: 12px 15px; // More balanced padding
+            border-radius: 8px; // Slightly more rounded
+            border: 1px solid #ddd;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background-color: #fff;
+
+            &:focus {
+              outline: none;
+              border-color: teal;
+              box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.1);
+            }
+
+            &:hover {
+              border-color: #bbb;
+            }
           }
 
           select {
-            padding: 19px;
+            cursor: pointer;
+            background-color: #fff;
           }
 
+          // Fixed description editor styling
           &.description {
             width: 100%;
-            height: 320px;
-
-            .quill > .ql-container > .ql-editor{
-              height: 200px;
-              font-size: 16px;
+            
+            .quill {
+              background-color: #fff;
+              border-radius: 8px;
+              
+              .ql-container {
+                min-height: 200px;
+                font-size: 14px;
+                
+                .ql-editor {
+                  min-height: 200px;
+                  font-size: 14px;
+                }
+              }
+              
+              .ql-toolbar {
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+                border-color: #ddd;
+              }
+              
+              .ql-container {
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+                border-color: #ddd;
+              }
             }
           }
         }
+
         .sendButton {
-          width: 30%;
-          border-radius: 5px;
+          width: calc(33.333% - 14px);
+          padding: 14px 20px;
+          border-radius: 8px;
           border: none;
           background-color: teal;
           color: white;
-          font-weight: bold;
+          font-weight: 600;
+          font-size: 16px;
           cursor: pointer;
+          transition: all 0.3s ease;
+          margin-top: 10px;
+
+          &:hover {
+            background-color: #006666;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
         }
       }
     }
@@ -65,12 +121,78 @@
     gap: 20px;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 
     img {
-      width: 50%;
-      height: 180px;
+      width: 80%; // Increased from 50% for better visibility
+      max-width: 250px;
+      height: auto;
+      min-height: 180px;
       object-fit: cover;
-      border-radius: 5px;
+      border-radius: 12px; // Slightly more rounded
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+
+// Responsive design for smaller screens
+@media (max-width: 768px) {
+  .newPostPage {
+    flex-direction: column;
+    
+    .formContainer {
+      .wrapper {
+        margin: 20px;
+        
+        form {
+          .item {
+            width: 100%; // Full width on mobile
+            
+            &.description {
+              width: 100%;
+            }
+          }
+          
+          .sendButton {
+            width: 100%;
+          }
+        }
+      }
+    }
+    
+    .sideContainer {
+      min-height: 300px;
+      
+      img {
+        width: 60%;
+      }
+    }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .newPostPage {
+    .formContainer {
+      .wrapper {
+        form {
+          .item {
+            width: calc(50% - 10px); // 2 columns on tablet
+            
+            &.description {
+              width: 100%;
+            }
+          }
+          
+          .sendButton {
+            width: calc(50% - 10px);
+          }
+        }
+      }
     }
   }
 }

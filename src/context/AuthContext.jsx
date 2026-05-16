@@ -2,20 +2,22 @@ import { createContext, useEffect, useState } from "react";
 
 export const AuthCOntext = createContext();
 
+const normalizeUser = (data) => data?.userWithoutPassword || data?.user || data;
+
 export const AuthContextProvider = ({ children }) => {
 
   const [currentuser, setCurrentuser] = useState(() => {
     const storedUser = localStorage.getItem("user");
 
     try {
-      return storedUser ? JSON.parse(storedUser) : null;
+      return storedUser ? normalizeUser(JSON.parse(storedUser)) : null;
     } catch (err) {
       return null;
     }
   });
 
   const updateUser = (data) => {
-    setCurrentuser(data);
+    setCurrentuser(normalizeUser(data));
   };
 
   useEffect(() => {
