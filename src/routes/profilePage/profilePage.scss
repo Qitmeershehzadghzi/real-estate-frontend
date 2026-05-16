@@ -1,4 +1,4 @@
-@import "../../responsive.scss";
+@use"../../responsive.scss" as *;
 
 .profilePage {
   display: flex;
@@ -51,6 +51,12 @@
           display: flex;
           align-items: center;
           gap: 20px;
+             button{
+          padding: 12px 24px;
+          background-color: #fece51;
+          cursor: pointer;
+          border: none;
+        }
         }
 
         img{
