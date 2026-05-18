@@ -4,22 +4,28 @@ import Map from "../../components/map/Map";
 import { useNavigate, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { useContext, useEffect, useState } from "react";
-import { AuthCOntext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 
 function SinglePage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [messageLoading, setMessageLoading] = useState(false);
   const [error, setError] = useState("");
-  const { currentuser } = useContext(AuthCOntext);
+  const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPost = async () => {
+      if (!/^[a-f\d]{24}$/i.test(id)) {
+        setError("Invalid post id");
+        return;
+      }
+
       try {
         const res = await apiRequest.get(`/posts/${id}`);
-        setPost(res.data);
+        setPost(res.data.post || res.data);
         setSaved(Boolean(res.data.isSaved));
       } catch (err) {
         setError(err?.response?.data?.message || "Failed to get post");
@@ -30,7 +36,7 @@ function SinglePage() {
   }, [id]);
 
   const handleSave = async () => {
-    if (!currentuser) {
+    if (!currentUser) {
       navigate("/login");
       return;
     }
@@ -44,11 +50,47 @@ function SinglePage() {
     }
   };
 
+  const handleSendMessage = async () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+
+    if (!post.user?.id) {
+      setError("Seller information is missing for this post");
+      return;
+    }
+
+    if (post.user.id === currentUser.id) {
+      navigate("/profile");
+      return;
+    }
+
+    setMessageLoading(true);
+
+    try {
+      const chatResponse = await apiRequest.post("/chats", {
+        receiverId: post.user.id,
+      });
+
+      await apiRequest.post(`/messages/${chatResponse.data.id}`, {
+        text: `Hi, I am interested in your property: ${post.title}`,
+      });
+
+      navigate("/profile");
+    } catch (err) {
+      console.log(err);
+      setError(err?.response?.data?.message || "Failed to start chat");
+    } finally {
+      setMessageLoading(false);
+    }
+  };
+
   if (error) return <div>{error}</div>;
   if (!post) return <div>Loading...</div>;
 
-  const images = post.images?.length ? post.images : ["/logo.png"];
   const detail = post.postDetail || {};
+  const images = post.images?.length ? post.images : ["/logo.png"];
 
   return (
     <div className="singlePage">
@@ -162,9 +204,9 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-            <button>
+            <button onClick={handleSendMessage} disabled={messageLoading}>
               <img src="/chat.png" alt="" />
-              Send a Message
+              {messageLoading ? "Sending..." : "Send a Message"}
             </button>
             <button
               onClick={handleSave}

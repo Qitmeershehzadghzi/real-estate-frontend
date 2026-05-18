@@ -1,12 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 
-export const AuthCOntext = createContext();
+export const AuthContext = createContext();
+export const AuthCOntext = AuthContext;
 
 const normalizeUser = (data) => data?.userWithoutPassword || data?.user || data;
 
 export const AuthContextProvider = ({ children }) => {
 
-  const [currentuser, setCurrentuser] = useState(() => {
+  const [currentUser, setCurrentUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
 
     try {
@@ -17,16 +18,22 @@ export const AuthContextProvider = ({ children }) => {
   });
 
   const updateUser = (data) => {
-    setCurrentuser(normalizeUser(data));
+    setCurrentUser(normalizeUser(data));
   };
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentuser));
-  }, [currentuser]);
+    if (currentUser) {
+      localStorage.setItem("user", JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [currentUser]);
 
   return (
-    <AuthCOntext.Provider value={{ currentuser, updateUser }}>
+    <AuthContext.Provider
+      value={{ currentUser, currentuser: currentUser, updateUser }}
+    >
       {children}
-    </AuthCOntext.Provider>
+    </AuthContext.Provider>
   );
 };

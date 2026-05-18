@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./layout.scss";
 import NewPostPage from "./routes/newPostPage/newPostPage.jsx";
 import Homepage from "./routes/homepage/homePage.jsx";
@@ -20,6 +20,7 @@ function App() {
         {/* Public Routes */}
         <Route index element={<Homepage />} />
         <Route path="list" element={<ListPage />} />
+        <Route path="posts" element={<Navigate to="/list" replace />} />
         <Route path=":id" element={<SinglePage />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />

@@ -10,7 +10,7 @@ function ProfileUpdatePage() {
 
   const [error, setError] = useState("");
 
-  const [avatar, setAvatar] = useState();
+  const [avatar, setAvatar] = useState([]);
 
   const navigate = useNavigate();
 
@@ -21,16 +21,16 @@ function ProfileUpdatePage() {
 
     const formData = new FormData(e.target);
 
-    const { username, email, password } = Object.fromEntries(formData);
+    const { name, email, password } = Object.fromEntries(formData);
 
     try {
       const res = await apiRequest.put(
         `/users/${currentuser?.id}`,
 
         {
-          username,
+          name,
           email,
-          avatar:avatar[0],
+          ...(avatar[0] && { avatar: avatar[0] }),
 
           ...(password && { password }),
         },
@@ -87,7 +87,7 @@ function ProfileUpdatePage() {
       </div>
 
       <div className="sideContainer">
-        <img src={avatar[0] ||currentuser?.avatar || "/noavatar.jpg"} alt="" className="avatar" />
+        <img src={avatar[0] || currentuser?.avatar || "/noavatar.jpg"} alt="" className="avatar" />
 
         <UploadWidget
           uwConfig={{
@@ -97,7 +97,7 @@ function ProfileUpdatePage() {
             folder: "avatars",
             maxImageFileSize: 20000000,
           }}
-          setAvatar={setAvatar}
+          setState={setAvatar}
         />
       </div>
     </div>

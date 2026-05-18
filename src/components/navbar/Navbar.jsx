@@ -1,90 +1,64 @@
 import { useContext, useState } from "react";
 import "./navbar.scss";
 import { Link } from "react-router-dom";
-import { AuthCOntext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
+import { useNotificationStore } from "../../lib/notificationStore";
 
 function Navbar() {
-
   const [open, setOpen] = useState(false);
 
-  const { currentuser } = useContext(AuthCOntext);
+  const { currentUser } = useContext(AuthContext);
 
-  console.log(currentuser);
+  const fetch = useNotificationStore((state) => state.fetch);
+  const number = useNotificationStore((state) => state.number);
+
+  if(currentUser) fetch();
 
   return (
     <nav>
       <div className="left">
-
-        <Link to="/" className="logo">
+        <a href="/" className="logo">
           <img src="/logo.png" alt="" />
           <span>LamaEstate</span>
-        </Link>
-
-        <Link to="/">Home</Link>
-        <Link to="/">About</Link>
-        <Link to="/">Contact</Link>
-        <Link to="/">Agents</Link>
-
+        </a>
+        <a href="/">Home</a>
+        <a href="/">About</a>
+        <a href="/">Contact</a>
+        <a href="/">Agents</a>
       </div>
-
       <div className="right">
-
-        {currentuser ? (
-
+        {currentUser ? (
           <div className="user">
-
-            <img
-              src={currentuser?.avatar || "/logo.png"}
-              alt=""
-            />
-
-            <span>{currentuser?.name || currentuser?.username}</span>
-
+            <img src={currentUser.avatar || "/noavatar.jpg"} alt="" />
+            <span>{currentUser.username}</span>
             <Link to="/profile" className="profile">
-              <div className="notification">3</div>
+              {number > 0 && <div className="notification">{number}</div>}
               <span>Profile</span>
             </Link>
-
           </div>
-
         ) : (
-
           <>
-            <Link to="/login">Sign in</Link>
-
-            <Link to="/register" className="register">
+            <a href="/login">Sign in</a>
+            <a href="/register" className="register">
               Sign up
-            </Link>
+            </a>
           </>
-
         )}
-
         <div className="menuIcon">
-
           <img
             src="/menu.png"
             alt=""
             onClick={() => setOpen((prev) => !prev)}
           />
-
         </div>
-
         <div className={open ? "menu active" : "menu"}>
-
-          <Link to="/">Home</Link>
-          <Link to="/">About</Link>
-          <Link to="/">Contact</Link>
-          <Link to="/">Agents</Link>
-
-          {!currentuser && (
-            <>
-              <Link to="/login">Sign in</Link>
-              <Link to="/register">Sign up</Link>
-            </>
-          )}
-
+          <a href="/">Home</a>
+          <a href="/">About</a>
+          <a href="/">Contact</a>
+          <a href="/">Agents</a>
+          <a href="/">Sign in</a>
+          <a href="/">Sign up</a>
         </div>
-
       </div>
     </nav>
   );

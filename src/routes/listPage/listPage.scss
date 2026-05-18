@@ -16,6 +16,18 @@
       gap: 50px;
       overflow-y: scroll;
       padding-bottom: 50px;
+
+      .savedPostsSection {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+
+        h1 {
+          font-weight: 300;
+        }
+      }
     }
   }
   .mapContainer {

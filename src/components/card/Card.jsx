@@ -31,9 +31,13 @@ function Card({ item }) {
             <div className="icon">
               <img src="/save.png" alt="" />
             </div>
-            <div className="icon">
+            <Link
+              to={`/${item.id}`}
+              className="icon"
+              aria-label={`Open ${item.title} to send a message`}
+            >
               <img src="/chat.png" alt="" />
-            </div>
+            </Link>
           </div>
         </div>
       </div>

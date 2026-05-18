@@ -20,7 +20,9 @@ function Map({ items }) {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const validItems = items.filter((item) => item.latitude && item.longitude);
+    const validItems = (items || []).filter(
+      (item) => item.latitude && item.longitude
+    );
     const center =
       validItems.length === 1
         ? [Number(validItems[0].latitude), Number(validItems[0].longitude)]

@@ -3,26 +3,53 @@ import List from "../../components/list/List";
 import "./profilePage.scss";
 import apiRequest from "../../lib/apiRequest";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext} from "react";
-import { AuthCOntext } from "../../context/AuthContext";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext.jsx";
+
 function ProfilePage() {
-  const navigate =useNavigate()
-    const { currentuser,updateUser } = useContext(AuthCOntext);
-  
-  const handleLogout =async () => {
+  const { updateUser, currentUser } = useContext(AuthContext);
+  const [userPosts, setUserPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
+  const [chats, setChats] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      setLoading(true);
+      setError("");
+
+      try {
+        const [postResponse, chatResponse] = await Promise.all([
+          apiRequest.get("/users/profilePosts"),
+          apiRequest.get("/chats"),
+        ]);
+
+        setUserPosts(postResponse.data?.userPosts || []);
+        setSavedPosts(postResponse.data?.savedPosts || []);
+        setChats(chatResponse.data || []);
+      } catch (err) {
+        console.log(err);
+        setError(err?.response?.data?.message || "Failed to load profile data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  const handleLogout = async () => {
     try {
-
-      const res = await apiRequest.post("/auth/logout");
-      console.log(res.data);
-updateUser(null);
-navigate("/")
-    } catch (error) {
-      console.log(error);
+      await apiRequest.post("/auth/logout");
+      updateUser(null);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
     }
-  }
-
-
-  
+  };
   return (
     <div className="profilePage">
       <div className="details">
@@ -30,48 +57,48 @@ navigate("/")
           <div className="title">
             <h1>User Information</h1>
             <Link to="/profile/update">
-
               <button>Update Profile</button>
             </Link>
           </div>
           <div className="info">
             <span>
               Avatar:
-              <img
-                src={currentuser?.avatar || "/logo.png"}
-                alt=""
-              />
+              <img src={currentUser?.avatar || "/noavatar.jpg"} alt="" />
             </span>
             <span>
-              Username: <b>{currentuser?.username || currentuser?.name}</b>
+              Username: <b>{currentUser?.name || currentUser?.username}</b>
             </span>
             <span>
-              E-mail: <b>{currentuser?.email}</b>
+              E-mail: <b>{currentUser?.email}</b>
             </span>
             <button onClick={handleLogout}>Logout</button>
           </div>
           <div className="title">
             <h1>My List</h1>
             <Link to="/add">
-
-            <button>Create New Post</button>
+              <button>Create New Post</button>
             </Link>
           </div>
-          <List />
+          {loading && <p>Loading...</p>}
+          {error && <p>{error}</p>}
+          {!loading && !error && <List posts={userPosts} />}
           <div className="title">
             <h1>Saved List</h1>
           </div>
-          <List />
+          {!loading && !error && (
+            <List posts={savedPosts} emptyMessage="No saved posts found." />
+          )}
         </div>
       </div>
       <div className="chatContainer">
         <div className="wrapper">
-          <Chat/>
+          {loading && <p>Loading...</p>}
+          {error && <p>{error}</p>}
+          {!loading && !error && <Chat chats={chats} />}
         </div>
       </div>
     </div>
   );
 }
-
 
 export default ProfilePage;
